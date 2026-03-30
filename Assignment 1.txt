@@ -1,0 +1,126 @@
+NAME: Liya Elizabeth Raju
+REGISTER NO: 25MML1009
+
+Assignment 1: Understanding Apache Spark and Distributed Processing
+
+Distributed Data Processing 
+Distributed data processing is a computational approach used to handle large-scale datasets (Big Data) by distributing both data storage and computation across multiple machines (nodes) connected in a cluster.
+
+1. Core Concept
+Instead of processing data on a single machine (which is limited by CPU, memory, and storage), distributed systems:
+•	Split the data into smaller partitions
+•	Distribute these partitions across multiple nodes
+•	Process them in parallel
+•	Aggregate results to produce the final output
+This model follows the principle of “divide → process → combine”.
+
+2. Key Components of Distributed Processing
+a) Data Partitioning
+•	Large datasets are broken into smaller chunks (blocks/partitions).
+•	Each partition is processed independently.
+•	Enables parallelism.
+b) Cluster of Nodes
+•	A cluster consists of:
+o	Master node → Coordinates tasks
+o	Worker nodes → Execute tasks
+c) Parallel Processing
+•	Tasks are executed simultaneously across nodes.
+•	Example: Processing 1 TB data using 10 machines → each handles ~100 GB.
+d) Fault Tolerance
+•	Systems replicate data or track computation steps.
+•	If a node fails, the system recovers automatically.
+e) Data Locality
+•	Processing is moved closer to where data resides to reduce network overhead.
+
+3. Traditional Systems: Hadoop MapReduce
+Apache Hadoop (MapReduce model) processes data in two stages:
+1.	Map Phase
+o	Input data is split and processed into key-value pairs.
+2.	Reduce Phase
+o	Intermediate results are aggregated.
+Limitations
+•	Disk-heavy processing: After every phase, results are written to disk.
+•	High latency: Disk I/O is slow.
+•	Not suitable for iterative algorithms (e.g., ML, graph processing).
+•	Rigid execution model (only map → reduce).
+
+4. How Apache Spark Improves Performance
+Apache Spark addresses the limitations of MapReduce through several architectural improvements.
+
+4.1 In-Memory Computation 
+What it means
+•	Spark stores intermediate computation results in RAM instead of disk.
+Why it matters
+•	RAM access is orders of magnitude faster than disk access.
+•	Avoids repeated disk reads/writes in multi-stage pipelines.
+Example
+Consider iterative machine learning:
+•	MapReduce: writes to disk after every iteration 
+•	Spark: keeps data in memory across iterations 
+Result
+•	Massive speed improvement (10x to 100x faster in many cases)
+
+4.2 Directed Acyclic Graph (DAG) Execution Engine
+Unlike MapReduce’s rigid 2-stage model, Spark:
+•	Builds a DAG (Directed Acyclic Graph) of operations
+•	Represents all transformations as a graph of stages
+•	Optimizes execution before running
+Benefits
+•	Combines multiple operations into a single stage
+•	Reduces unnecessary data movement
+•	Improves overall efficiency
+
+4.3 Lazy Evaluation
+•	Spark does not execute operations immediately
+•	It records transformations (like map, filter) as a plan
+•	Execution happens only when an action (like collect, count) is called
+Why this helps
+•	Enables optimization before execution
+•	Eliminates redundant computations
+•	Reduces resource usage
+
+4.4 Efficient Data Abstractions
+a) RDD (Resilient Distributed Dataset)
+•	Immutable distributed collection of data
+•	Fault-tolerant via lineage tracking
+b) DataFrames & Datasets
+•	Structured data representation (like tables)
+•	Optimized using:
+o	Catalyst Optimizer (query optimization)
+o	Tungsten Engine (memory management & CPU efficiency)
+Advantage
+•	Faster than raw RDD operations
+•	Better for SQL-like and structured processing
+
+4.5 Reduced Disk I/O
+•	Spark minimizes disk usage by:
+o	Caching intermediate results in memory
+o	Writing to disk only when necessary
+Impact
+•	Reduces bottlenecks
+•	Speeds up pipelines significantly
+
+4.6 Fault Tolerance via Lineage
+Instead of replicating data like Hadoop:
+•	Spark tracks how data was created (lineage graph)
+•	If a partition is lost:
+o	It is recomputed using transformations
+Benefit
+•	Less storage overhead
+•	Efficient recovery
+
+5. Comparative Summary
+Feature	                Hadoop MapReduce	 Apache Spark
+Processing	        Disk-based	         In-memory
+Speed	                Slow	                 Fast (10–100x)
+Execution Model	        Map → Reduce	         DAG-based
+Iterative Processing	Inefficient	         Efficient
+Latency	                High	                 Low
+Flexibility	        Limited	                 High
+
+6. Role of In-Memory Computation 
+In-memory computation is the main reason Spark is faster:
+•	Eliminates repeated disk access
+•	Keeps intermediate datasets reusable
+•	Enables fast iterative algorithms
+•	Supports real-time and interactive workloads
