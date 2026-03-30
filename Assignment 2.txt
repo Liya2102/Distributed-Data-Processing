@@ -1,0 +1,82 @@
+NAME: Liya Elizabeth Raju
+REGISTER NO: 25MML1009
+
+Assignment 2: Spark DataFrames and Transformations
+
+Transformations vs Actions in Apache Spark
+In Spark, all operations on data are broadly classified into transformations and actions. Understanding their difference is crucial because it directly affects execution planning, optimization, and performance.
+
+1. Transformations
+Definition
+Transformations are operations that create a new dataset from an existing one without actually executing computation immediately.
+They are lazy (not executed right away).
+Key Characteristics
+•	Return a new RDD/DataFrame
+•	Do not trigger execution
+•	Build a logical execution plan (DAG)
+
+Examples of Transformations
+1. map()
+•	Applies a function to each element
+•	Example: Multiply each number by 2
+2. filter()
+•	Selects elements based on a condition
+•	Example: Keep only even numbers
+3. flatMap()
+•	Similar to map, but flattens the output
+•	Example: Splitting sentences into words
+4. groupByKey() / reduceByKey()
+•	Groups data based on keys
+•	Used in aggregation tasks
+
+Significance in Execution Planning
+•	Transformations are recorded, not executed
+•	Spark builds a Directed Acyclic Graph (DAG) of all transformations
+•	Allows:
+o	Optimization (combining operations)
+o	Minimizing data shuffles
+o	Efficient scheduling
+Example:
+If you write:
+rdd.map(...).filter(...).map(...)
+Spark combines these into fewer stages before execution.
+
+2. Actions
+Definition
+Actions are operations that trigger the actual execution of transformations and return a result.
+They are eager (execute immediately).
+Key Characteristics
+•	Return a value (or write output)
+•	Trigger DAG execution
+•	Produce final results
+
+Examples of Actions
+1. collect()
+•	Returns all elements to the driver program
+2. count()
+•	Returns the number of elements
+3. take(n)
+•	Returns first n elements
+4. saveAsTextFile()
+•	Writes output to storage
+
+Significance in Execution Planning
+•	Actions trigger execution of the DAG
+•	Spark:
+1.	Optimizes the transformation plan
+2.	Divides it into stages
+3.	Executes tasks across the cluster
+Without an action, no computation happens, even if many transformations are defined.
+
+3. Key Differences
+Feature	                Transformations	                Actions
+Execution	        Lazy	                        Eager
+Purpose	                Define computation              Execute computation
+Output	                New dataset (RDD/DataFrame)	Result/value or output
+DAG Role	        Builds DAG	                Triggers DAG execution
+Performance Impact	Enables optimization	        Starts actual processing
+
+4. Simple Analogy
+•	Transformations → Writing a plan/recipe
+•	Actions → Actually cooking the food
+Until you start cooking (action), nothing really happens.

@@ -1,0 +1,95 @@
+NAME: Liya Elizabeth Raju
+REGISTER NO: 25MML1009
+
+Assignment 3: Introduction to Spark Structured Streaming
+
+Structured Streaming in Apache Spark
+1. What is Structured Streaming?
+Structured Streaming is a scalable and fault-tolerant stream processing engine built on top of Spark SQL. It allows you to process real-time data streams using the same APIs as batch processing (DataFrames/Datasets).
+Key idea:
+Spark treats a data stream as an unbounded table (a table that keeps growing over time).
+•	Incoming data = continuously appended rows
+•	Queries run continuously and update results incrementally
+
+2. How It Works 
+•	Data flows from sources like:
+o	Kafka, sockets, files
+•	Spark processes data in small batches (micro-batching) or continuous mode
+•	Results are written to:
+o	Console, files, databases, dashboards
+Internally, it uses:
+•	Incremental execution
+•	Checkpointing for fault tolerance
+•	DAG optimization (same as batch processing)
+
+3. Difference Between Structured Streaming and Batch Processing
+Feature	        Batch Processing	Structured Streaming
+Data Type	Finite dataset	        Infinite (continuous stream)
+Execution	One-time job	        Continuous processing
+Latency	        High (minutes/hours)	Low (seconds/milliseconds)
+Input	        Static data (files, DB)	Real-time data (events, logs)
+Output	        Generated once	        Continuously updated
+Use Case	Historical analysis	Real-time analytics
+
+Example
+•	Batch Processing:
+Analyze yesterday’s log file once.
+•	Structured Streaming:
+Continuously analyze logs as they are generated in real time.
+
+4. Key Features of Structured Streaming
+1. Unified API (Batch + Streaming)
+•	Same DataFrame/Dataset API for both batch and streaming
+•	Reduces learning curve
+
+2. Micro-Batch Processing
+•	Data is processed in small batches (e.g., every 1 second)
+•	Provides near real-time performance with high reliability
+
+3. Fault Tolerance
+•	Uses checkpointing and write-ahead logs
+•	Recovers automatically from failures
+
+4. Exactly-Once Processing
+•	Ensures each record is processed only once (no duplicates)
+•	Important for financial and critical systems
+
+5. Event-Time Processing
+•	Supports handling late data using:
+o	Watermarking
+•	Ensures correct results even with delayed events
+
+6. Scalability
+•	Runs on distributed clusters
+•	Can handle high-throughput streaming data
+
+7. Integration with Ecosystem
+•	Works with:
+o	Kafka
+o	HDFS
+o	Cloud storage
+o	Databases
+
+5. Real-Time Use Cases
+1. Real-Time Log Processing
+•	Monitor application/server logs
+•	Detect anomalies instantly
+
+2. Fraud Detection Systems
+•	Analyze transactions in real time
+•	Flag suspicious activities immediately
+
+3. IoT Sensor Data Processing
+•	Process continuous sensor data streams
+•	Example: Smart agriculture, industrial monitoring
+
+4. Real-Time Recommendation Systems
+•	Suggest products/content dynamically
+•	Based on user activity
+
+5. Stock Market Analysis
+•	Track price movements in real time
+•	Trigger alerts on changes
+
+6. Social Media Analytics
+•	Analyze trends, hashtags, sentiment live
